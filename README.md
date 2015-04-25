@@ -23,7 +23,8 @@ Dimensions: 1
 The curve of the above objective function is shown below:
 
 ![Image of curve](https://raw.githubusercontent.com/bjcrawford/SGAVariationAnalysis/master/res/function1.png)
-Credit: "Introduction to Evolutionary Algorithms" by Xinjie Yu, Chapter 2
+
+Credit: "Introduction to Evolutionary Algorithms" by [Xinjie Yu](http://www.tsinghua.edu.cn/publish/eeaen/1699/2010/20101216114256922137685/20101216114256922137685_.html), Chapter 2
 
 ### Function 2
 
@@ -40,6 +41,7 @@ Dimensions: 5
 The 2 dimensional plot of the above objective function is shown below:
 
 ![Image of curve](https://raw.githubusercontent.com/bjcrawford/SGAVariationAnalysis/master/res/function2.png)
+
 Credit: [Virtual Library of Simulation Experiments](http://www.sfu.ca/~ssurjano/spheref.html)
 
 ### Function 3
@@ -55,4 +57,5 @@ s.t. -20 < x < 30
 Dimensions: 2
 
 ![Image of curve](https://raw.githubusercontent.com/bjcrawford/SGAVariationAnalysis/master/res/function3.png)
+
 Credit: [Virtual Library of Simulation Experiments](http://www.sfu.ca/~ssurjano/ackley.html)
