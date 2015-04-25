@@ -11,7 +11,9 @@ import sgavariationanalysis.BinaryIndividual;
  * and unimodal. This is a minimum problem with a global minimum at 
  * f(0) = 0.0.
  * 
- * min f(x) = sum(xi^2), s.t. -5 < x < 5
+ * min f(x) = sum(xi^2), 
+ * 
+ * s.t. -5 < x < 5
  * 
  * Dimensions: 5
  * 

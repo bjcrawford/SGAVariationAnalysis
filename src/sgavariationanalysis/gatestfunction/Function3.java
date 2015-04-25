@@ -9,8 +9,7 @@ import sgavariationanalysis.BinaryIndividual;
 /**
  * The Ackley function offers many local minima on the outer edges
  * with a deep global minima located at the center. This is a minimum 
- * problem with a global minimum at 
- * f(0) = 0.0.
+ * problem with a global minimum at f(0) = 0.0.
  * 
  * min f(x) = -20 * exp(-0.2 * sqrt(1/n * sum(xi^2)) - 
  *            exp(1/n * sum(cos(2 * pi * xi))) + 20 + e, 
