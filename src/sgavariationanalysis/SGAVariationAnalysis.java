@@ -23,7 +23,7 @@ public class SGAVariationAnalysis {
 
     public static void main(String[] args) {
         
-        GATestFunction fitFunc = new Function2();
+        GATestFunction fitFunc = new Function3();
         BinaryPopulation pop;
         BinaryIndividual worstInd = null;
         BinaryIndividual bestInd = null;
@@ -59,8 +59,8 @@ public class SGAVariationAnalysis {
                     totalObj += bi.getObjValue();
                 }
 
-                pop.select();
-                pop.reproduce(BinaryVariation.RC);
+                pop.rwSelect();
+                pop.reproduce(BinaryVariation.TPC);
             }
             
         }
@@ -74,7 +74,7 @@ public class SGAVariationAnalysis {
         System.out.println("\nWorst Individual:\n" + worstInd);
         
         System.out.println("\nMean Individual:\n" + 
-                "  Fitness: " + meanObj);
+                "  Objective Value: " + meanObj);
         if (!fitFunc.isMaxProblem()) {
             System.out.println("  Fitness transferral: " + (fitFunc.getFitnessTransferral(meanObj)));
         }

@@ -5,6 +5,7 @@
 package sgavariationanalysis;
 
 import java.util.ArrayList;
+import java.util.Random;
 import sgavariationanalysis.gatestfunction.GATestFunction;
 
 /**
@@ -13,6 +14,9 @@ import sgavariationanalysis.gatestfunction.GATestFunction;
  * @author Brett Crawford <brett.crawford@temple.edu>
  */
 public class BinaryPopulation {
+    
+    
+    private static final Random RAND = SGAVariationAnalysis.RAND;
         
     
 /*============================== Member Variables ============================*/
@@ -64,7 +68,7 @@ public class BinaryPopulation {
         
         for (BinaryIndividual bi : population) {
             
-            if (bi.getFitFunction().isMaxProblem()) {
+            if (bi.getTestFunction().isMaxProblem()) {
                 totalFitness += bi.getObjValue();
             }
             else {
@@ -74,7 +78,7 @@ public class BinaryPopulation {
         
         for (BinaryIndividual bi : population) {
             
-            if (bi.getFitFunction().isMaxProblem()) {
+            if (bi.getTestFunction().isMaxProblem()) {
                 bi.setRelFitness(bi.getObjValue() / totalFitness);
             }
             else {
@@ -93,20 +97,21 @@ public class BinaryPopulation {
      * with replacement, meaning an individual can be selected from the 
      * population into the mating pool multiple times.
      */
-    public void select() {
+    public void rwSelect() {
         
         for (int i = 0; i < matingPool.size(); i++) {
             
-            float selectValue = SGAVariationAnalysis.RAND.nextFloat();
-            float accumValue = 0.0f;
+            float select = RAND.nextFloat();
+            float sliceLow = 0.0f;
+            float sliceHigh;
             
-            for (int j = 0; j < population.size(); j++) {
-                if(selectValue >= accumValue &&
-			selectValue <= (accumValue + population.get(j).getRelFitness())) {
-                    matingPool.set(i, new BinaryIndividual(population.get(j)));
+            for (BinaryIndividual bi : population) {
+                sliceHigh = sliceLow + bi.getRelFitness();
+                if (select >= sliceLow && select <= sliceHigh) {
+                    matingPool.set(i, new BinaryIndividual(bi));
                     break;
                 }
-                accumValue += population.get(j).getRelFitness();
+                sliceLow = sliceHigh;
             }
         }
     }
@@ -134,23 +139,53 @@ public class BinaryPopulation {
             
             switch(crossoverMethodId) {
                 case BinaryVariation.SPC:
-                     children = BinaryVariation.singlePointCrossover(parentA, parentB, false);
+                     children = BinaryVariation
+                             .singlePointCrossover(parentA, parentB, false);
                     break;
                 case BinaryVariation.DPC:
-                    children = BinaryVariation.dualPointCrossover(parentA, parentB, false);
+                    children = BinaryVariation
+                            .dualPointCrossover(parentA, parentB, false);
                     break;
                 case BinaryVariation.SPCRS:
-                     children = BinaryVariation.singlePointCrossover(parentA, parentB, true);
+                     children = BinaryVariation
+                             .singlePointCrossover(parentA, parentB, true);
                     break;
                 case BinaryVariation.DPCRS:
-                    children = BinaryVariation.dualPointCrossover(parentA, parentB, true);
+                    children = BinaryVariation
+                            .dualPointCrossover(parentA, parentB, true);
                     break;
                 case BinaryVariation.RC:
-                    children = BinaryVariation.ringCrossover(parentA, parentB);
+                    children = BinaryVariation
+                            .ringCrossover(parentA, parentB);
+                    break;
+                case BinaryVariation.UC:
+                    children = BinaryVariation
+                            .uniformCrossover(parentA, parentB);
+                    break;
+                case BinaryVariation.SC:
+                    children = BinaryVariation
+                            .shuffleCrossover(parentA, parentB, false);
+                    break;
+                case BinaryVariation.SCRS:
+                    children = BinaryVariation
+                            .shuffleCrossover(parentA, parentB, true);
+                    break;
+                case BinaryVariation.TPC:
+                    // In this case, a third parent is chosen from the 
+                    // individual remaining in the mating pool.
+                    int j;
+                    do {
+                        j = (int) (RAND.nextFloat() * matingPool.size());
+                    } while (j == i || j == i+1);
+                    BinaryIndividual parentC = matingPool.get(j);
+                    children = BinaryVariation
+                            .threeParentCrossover(parentA, parentC, parentB);
                     break;
                 default:
-                    System.out.println("Invalid crossover method id. Using SPC.");
-                    children = BinaryVariation.singlePointCrossover(parentA, parentB, false);
+                    System.out.println("BinaryPopulation: Invalid id. "
+                            + "Using SPC.");
+                    children = BinaryVariation
+                            .singlePointCrossover(parentA, parentB, false);
             }
             
             BinaryVariation.bitFlipMutation(children.get(0));

@@ -6,6 +6,7 @@ package sgavariationanalysis;
 
 import sgavariationanalysis.gatestfunction.GATestFunction;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -14,6 +15,9 @@ import java.util.stream.Collectors;
  * @author Brett Crawford <brett.crawford@temple.edu>
  */
 public class BinaryIndividual {
+    
+    
+    private static final Random RAND = SGAVariationAnalysis.RAND;
 
     
 /*============================== Member Variables ============================*/
@@ -24,7 +28,7 @@ public class BinaryIndividual {
      * of the chromosomes in binary format (genotype). Each boolean represents
      * a gene and each list represents a separate variable. 
      */
-    private ArrayList<ArrayList<Boolean>> chromosome;
+    private final ArrayList<ArrayList<Boolean>> chromosome;
 
     /**
      * The location, the real number representation the chromosome 
@@ -52,7 +56,10 @@ public class BinaryIndividual {
      */
     private float relFitness;
     
-    private final GATestFunction fitFunction;
+    /**
+     * The test function to use for the individual.
+     */
+    private final GATestFunction testFunction;
     
  
 /*================================ Constructors ==============================*/
@@ -61,12 +68,12 @@ public class BinaryIndividual {
      * Creates an individual with num variables of len length, in bits, and
      * randomly generates a chromosome.
      * 
-     * @param fitFunction the fitness function 
+     * @param testFunction the test function 
      */
-    public BinaryIndividual(GATestFunction fitFunction) {
+    public BinaryIndividual(GATestFunction testFunction) {
         
-        int num = fitFunction.getNumVars();
-        int len = fitFunction.getGenesPerVar();
+        int num = testFunction.getNumVars();
+        int len = testFunction.getGenesPerVar();
         chromosome = new ArrayList<>();
         for (int vars = 0; vars < num; vars++) {
             chromosome.add(vars, new ArrayList<>());
@@ -75,7 +82,7 @@ public class BinaryIndividual {
             }
           
         }
-        this.fitFunction = fitFunction;
+        this.testFunction = testFunction;
         generateRandomChromosome();
         updateValues();
         relFitness = 0;
@@ -84,13 +91,13 @@ public class BinaryIndividual {
     /**
      * Creates an individual with the given chromosome.
      * 
-     * @param chromosome 
-     * @param fitFunction 
+     * @param chromosome the chromosome
+     * @param testFunction the test function
      */
     public BinaryIndividual(ArrayList<Boolean> chromosome,
-            GATestFunction fitFunction) {
-        int num = fitFunction.getNumVars();
-        int len = fitFunction.getGenesPerVar();
+            GATestFunction testFunction) {
+        int num = testFunction.getNumVars();
+        int len = testFunction.getGenesPerVar();
         this.chromosome = new ArrayList<>();
         for (int vars = 0; vars < num; vars++) {
             this.chromosome.add(vars, new ArrayList<>());
@@ -100,7 +107,7 @@ public class BinaryIndividual {
                         Boolean.TRUE : Boolean.FALSE);
             }
         }
-        this.fitFunction = fitFunction;
+        this.testFunction = testFunction;
         updateValues();
         relFitness = 0;
     }
@@ -123,7 +130,7 @@ public class BinaryIndividual {
                 );
             }
         }
-        this.fitFunction = toCopy.getFitFunction();
+        this.testFunction = toCopy.getTestFunction();
         updateValues();
         relFitness = 0;
     }
@@ -139,7 +146,7 @@ public class BinaryIndividual {
         
         for (ArrayList<Boolean> var : chromosome) {
             for (int i = 0; i < getGenesPerVar(); i++) {
-                var.set(i, SGAVariationAnalysis.RAND.nextBoolean());
+                var.set(i, RAND.nextBoolean());
             }
         }
     }
@@ -150,8 +157,8 @@ public class BinaryIndividual {
      */
     private void updateValues() {
         realValues = chromoToReal();
-        objValue = getFitFunction().calculateFitness(this);
-        fitTransValue = getFitFunction().getFitnessTransferral(objValue);
+        objValue = getTestFunction().calculateFitness(this);
+        fitTransValue = getTestFunction().getFitnessTransferral(objValue);
     }
     
     /**
@@ -163,8 +170,8 @@ public class BinaryIndividual {
     private ArrayList<Float> chromoToReal() {
         
         ArrayList<Float> res = new ArrayList<>();
-        float xLower = fitFunction.getXLowerBound();
-        float xUpper = fitFunction.getXUpperBound();
+        float xLower = testFunction.getXLowerBound();
+        float xUpper = testFunction.getXUpperBound();
         
         for (int vars = 0; vars < getNumVars(); vars++) {
             float real = 0.0f;
@@ -190,8 +197,8 @@ public class BinaryIndividual {
     private ArrayList<ArrayList<Boolean>> realToChromo() {
         
         ArrayList<ArrayList<Boolean>> chromo = new ArrayList<>();
-        float xLower = fitFunction.getXLowerBound();
-        float xUpper = fitFunction.getXUpperBound();
+        float xLower = testFunction.getXLowerBound();
+        float xUpper = testFunction.getXUpperBound();
         
         for (int vars = 0; vars < getNumVars(); vars++) {
             chromo.add(vars, new ArrayList<>());
@@ -221,14 +228,14 @@ public class BinaryIndividual {
      * @return the number of variables represented in the chromosome
      */
     public int getNumVars() {
-        return getFitFunction().getNumVars();
+        return getTestFunction().getNumVars();
     }
     
     /**
      * @return the number of genes, in bits, per variable
      */
     public int getGenesPerVar() {
-        return getFitFunction().getGenesPerVar();
+        return getTestFunction().getGenesPerVar();
     }
     
     /**
@@ -330,8 +337,8 @@ public class BinaryIndividual {
     /**
      * @return the fitFunction
      */
-    public GATestFunction getFitFunction() {
-        return fitFunction;
+    public GATestFunction getTestFunction() {
+        return testFunction;
     }
     
     @Override
@@ -346,7 +353,7 @@ public class BinaryIndividual {
                 .collect(Collectors.joining(", "));
         res += "]\n  Relative Fitness: " + relFitness +
                "\n  Genotype: " + getGenotype();
-        if (!fitFunction.isMaxProblem()) {
+        if (!testFunction.isMaxProblem()) {
             res += "\n  Fitness Transferral: " + fitTransValue;
         }
         

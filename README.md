@@ -3,8 +3,10 @@ An Analysis of Variation Methods used in Genetic Algorithms
 
 This program was created as a part of an independent research course on 
 Evolutionary Computation taken in the spring of 2015. The inspiration for this 
-program is from chapter 2.2 of the text "Introduction to Evolutionary 
-Algorithms" by Xinjie Yu.
+program is from the text "Introduction to Evolutionary Algorithms" by Xinjie Yu.
+
+The implementation and parameters of the genetic algorithms used are as follows.
+
 
 This simple genetic algorithm is used to attempt to find a solution to the 
 following optimization problems:
