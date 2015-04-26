@@ -4,7 +4,8 @@
  */
 package sgavariationanalysis.gatestfunction;
 
-import sgavariationanalysis.BinaryIndividual;
+import java.util.ArrayList;
+import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * The sphere model function (De Jong's Function 1) is convex, continuous,
@@ -92,15 +93,15 @@ public class Function2 implements GATestFunction {
     /**
      * Calculates and returns the fitness value for the given individual.
      * 
-     * @param individual the individual to calculate fitness for
+     * @param reals the value to calculate the fitness from
      * @return the fitness value
      */
     @Override
-    public float calculateFitness(BinaryIndividual individual) {
+    public float calculateFitness(ArrayList<Float> reals) {
         
         float res = 0.0f;
         
-        for (float real : individual.getRealValue()) {
+        for (float real : reals) {
             res += (float) Math.pow(real, 2);
         }
         
@@ -135,5 +136,12 @@ public class Function2 implements GATestFunction {
     @Override
     public float getOptimalSolution() {
         return 0.0f;
+    }
+    
+    @Override
+    public String toString() {
+        return "  Name: Function2\n" +
+                "  Fitness Formula: min f(x) = sum(xi^2)\n" +
+                "  Optimal Solution: " + getOptimalSolution();
     }
 }

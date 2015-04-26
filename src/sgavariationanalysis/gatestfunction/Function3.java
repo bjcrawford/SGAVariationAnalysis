@@ -4,7 +4,8 @@
  */
 package sgavariationanalysis.gatestfunction;
 
-import sgavariationanalysis.BinaryIndividual;
+import java.util.ArrayList;
+import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * The Ackley function offers many local minima on the outer edges
@@ -13,7 +14,8 @@ import sgavariationanalysis.BinaryIndividual;
  * 
  * min f(x) = -20 * exp(-0.2 * sqrt(1/n * sum(xi^2)) - 
  *            exp(1/n * sum(cos(2 * pi * xi))) + 20 + e, 
- *            s.t. -20 < x < 30
+ * 
+ * s.t. -20 < x < 30
  * 
  * Dimensions: 2
  * 
@@ -91,14 +93,14 @@ public class Function3 implements GATestFunction {
     /**
      * Calculates and returns the fitness value for the given individual.
      * 
-     * @param individual the individual to calculate fitness for
+     * @param reals the value to calculate the fitness from
      * @return the fitness value
      */
     @Override
-    public float calculateFitness(BinaryIndividual individual) {
+    public float calculateFitness(ArrayList<Float> reals) {
         
         float firstSum = 0.0f;
-        for (float real : individual.getRealValue()) {
+        for (float real : reals) {
             firstSum += (float) Math.pow(real, 2);
         }
         
@@ -106,7 +108,7 @@ public class Function3 implements GATestFunction {
                 -0.2f * (float) Math.sqrt(firstSum / (float) getNumVars()));
         
         float secondSum = 0.0f;
-        for (float real : individual.getRealValue()) {
+        for (float real : reals) {
             secondSum += (float) Math.cos(2 * Math.PI * real);
         }
         
@@ -146,6 +148,14 @@ public class Function3 implements GATestFunction {
     @Override
     public float getOptimalSolution() {
         return 0.0f;
+    }
+    
+    @Override
+    public String toString() {
+        return "  Name: Function3\n" +
+                "  Fitness Formula: min f(x) = -20 * exp(-0.2 * sqrt(1/n * sum(xi^2)) - \n" +
+                "                              exp(1/n * sum(cos(2 * pi * xi))) + 20 + e" +
+                "  Optimal Solution: " + getOptimalSolution();
     }
     
 }

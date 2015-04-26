@@ -2,7 +2,7 @@
  *  Author: Brett Crawford <brett.crawford@temple.edu>
  *  File:   Individual.java
  */
-package sgavariationanalysis;
+package sgavariationanalysis.binary;
 
 import sgavariationanalysis.gatestfunction.GATestFunction;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
- * A class representing an individual in a GA.
+ * A class representing a binary individual in a GA.
  * 
  * @author Brett Crawford <brett.crawford@temple.edu>
  */
@@ -35,8 +35,7 @@ public class BinaryIndividual {
 
     /**
      * The quality, the objective value, a float representing the evaluation 
-     * of the chromosome according to the fitness function. Each float 
-     * represents a separate variable.
+     * of the chromosome according to the fitness function.
      */
     private float objValue;
     
@@ -97,7 +96,7 @@ public class BinaryIndividual {
         this.isGray = isGray;
         generateRandomChromosome();
         updateValues();
-        relFitness = 0;
+        relFitness = 0.0f;
     }
     
     /**
@@ -174,7 +173,7 @@ public class BinaryIndividual {
      */
     private void updateValues() {
         realValues = chromoToReal();
-        objValue = getTestFunction().calculateFitness(this);
+        objValue = getTestFunction().calculateFitness(realValues);
         fitTransValue = getTestFunction().getFitnessTransferral(objValue);
     }
     

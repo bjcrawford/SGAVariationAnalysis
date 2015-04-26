@@ -4,7 +4,8 @@
  */
 package sgavariationanalysis.gatestfunction;
 
-import sgavariationanalysis.BinaryIndividual;
+import java.util.ArrayList;
+import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * An interface for defining a testing function for a GA.
@@ -52,10 +53,10 @@ public interface GATestFunction {
     /**
      * Calculates and returns the fitness value for the given individual.
      * 
-     * @param individual the individual to calculate fitness for
+     * @param reals the value(s) to calculate the fitness from
      * @return the fitness value
      */
-    public float calculateFitness(BinaryIndividual individual);
+    public float calculateFitness(ArrayList<Float> reals);
     
     /**
      * Calculate the fitness transferral value for the given fitness value.

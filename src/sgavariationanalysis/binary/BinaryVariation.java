@@ -2,11 +2,12 @@
  *  Author: Brett Crawford <brett.crawford@temple.edu>
  *  File:   VariationMethods.java
  */
-package sgavariationanalysis;
+package sgavariationanalysis.binary;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import sgavariationanalysis.SGAVariationAnalysis;
 
 /**
  *
@@ -209,8 +210,8 @@ public class BinaryVariation {
             BinaryIndividual parentB) {
         
         ArrayList<BinaryIndividual> res = new ArrayList<>(2);
-        ArrayList<Boolean> chromoChildA = new ArrayList<>();
-        ArrayList<Boolean> chromoChildB = new ArrayList<>();
+        ArrayList<Boolean> chromoChildA = parentA.getChromosome();
+        ArrayList<Boolean> chromoChildB = parentB.getChromosome();
         
         if (RAND.nextFloat() < CROSSOVER_PROB) {
            
@@ -228,12 +229,12 @@ public class BinaryVariation {
             } while (cutPoint < lowerBound || cutPoint > upperBound);
 
             for (int i = 0, cp = cutPoint; i < numGenes; i++, cp++) {
-                chromoChildA.add(i, parentRing.get(cp % parentRing.size()));
+                chromoChildA.set(i, parentRing.get(cp % parentRing.size()));
             }
 
             for (int i = 0, cp = cutPoint; i < numGenes; i++, cp--) {
                 int n = parentRing.size();
-                chromoChildB.add(i, parentRing.get(((cp % n) + n) % n));
+                chromoChildB.set(i, parentRing.get(((cp % n) + n) % n));
             }
         }
         

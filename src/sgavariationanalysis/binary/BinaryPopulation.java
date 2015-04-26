@@ -2,10 +2,11 @@
  *  Author: Brett Crawford <brett.crawford@temple.edu>
  *  File:   BinaryPopulation.java
  */
-package sgavariationanalysis;
+package sgavariationanalysis.binary;
 
 import java.util.ArrayList;
 import java.util.Random;
+import sgavariationanalysis.SGAVariationAnalysis;
 import sgavariationanalysis.gatestfunction.GATestFunction;
 
 /**
@@ -28,6 +29,9 @@ public class BinaryPopulation {
     /* The mating pools of individuals */
     private final ArrayList<BinaryIndividual> matingPool;
     
+    /* The id of the crossover variation method */
+    private final int crossoverId;
+    
      
 /*================================ Constructors ==============================*/
 
@@ -38,12 +42,14 @@ public class BinaryPopulation {
      * @param testFunction the fitness function to use
      * @param rand the pseudo-random number generator
      * @param isGray a flag for gray code representation
+     * @param crossoverId
      */
     public BinaryPopulation(GATestFunction testFunction, Random rand,
-            boolean isGray) {
+            boolean isGray, int crossoverId) {
         
         population = new ArrayList<>();
         matingPool = new ArrayList<>();
+        this.crossoverId = crossoverId;
         
         for (int i = 0; i < SGAVariationAnalysis.POP_SIZE; i++) {
             population.add(i, new BinaryIndividual(testFunction, rand, isGray));
@@ -129,7 +135,7 @@ public class BinaryPopulation {
      * 
      * @param crossoverMethodId the id of the crossover method to use
      */
-    public void reproduce(int crossoverMethodId) {
+    public void reproduce() {
         
         population.stream().forEach((bi) -> {
             bi = null;
@@ -141,7 +147,7 @@ public class BinaryPopulation {
             BinaryIndividual parentB = matingPool.get(i + 1);
             ArrayList<BinaryIndividual> children;
             
-            switch(crossoverMethodId) {
+            switch(crossoverId) {
                 case BinaryVariation.SPC:
                      children = BinaryVariation
                              .singlePointCrossover(parentA, parentB, false);

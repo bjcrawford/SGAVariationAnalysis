@@ -4,7 +4,8 @@
  */
 package sgavariationanalysis.gatestfunction;
 
-import sgavariationanalysis.BinaryIndividual;
+import java.util.ArrayList;
+import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * A simple sinusoidal function with many local minima and maxima. This is
@@ -90,13 +91,14 @@ public class Function1 implements GATestFunction {
     /**
      * Calculates and returns the fitness value for the given individual.
      * 
-     * @param individual the individual to calculate fitness for
+     * @param reals the value to calculate the fitness from
      * @return the fitness value
      */
     @Override
-    public float calculateFitness(BinaryIndividual individual) {
+    public float calculateFitness(ArrayList<Float> reals) {
         
-        float real = individual.getRealValue().get(0);
+        float real = reals.get(0);
+        
         return real * (float) Math.sin(10.0f * (float) Math.PI * real) + 2.0f;
     }
     
@@ -122,5 +124,12 @@ public class Function1 implements GATestFunction {
     @Override
     public float getOptimalSolution() {
         return 3.85f;
+    }
+    
+    @Override
+    public String toString() {
+        return "  Name: Function1\n" +
+                "  Fitness Formula: max f(x) = x * sin(10 * pi * x) + 2.0\n" +
+                "  Optimal Solution: " + getOptimalSolution();
     }
 }
