@@ -18,6 +18,7 @@ public class SGAVariationAnalysis {
     public static final float CROSSOVER_PROB = 0.8f;
     public static final float MUTATION_PROB = 0.01f;
     public static final int NUM_TRIALS = 30;
+    public static final boolean IS_GRAY = false;
     
     public static final Random RAND = new Random(System.currentTimeMillis());
 

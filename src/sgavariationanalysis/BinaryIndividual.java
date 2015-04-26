@@ -18,11 +18,12 @@ public class BinaryIndividual {
     
     
     private static final Random RAND = SGAVariationAnalysis.RAND;
+    private static final boolean IS_GRAY = SGAVariationAnalysis.IS_GRAY;
 
     
 /*============================== Member Variables ============================*/
 
-
+    
     /**
      * The location, a list of lists of boolean values representing the genes 
      * of the chromosomes in binary format (genotype). Each boolean represents
@@ -162,8 +163,9 @@ public class BinaryIndividual {
     }
     
     /**
-     * Returns the real value number representation of this individual's
-     * chromosome.
+     * Returns the real value number representation of this individual
+     * with the chromosome being represented as either binary or gray code
+     * according to the program flag.
      * 
      * @return The real value number
      */
@@ -174,50 +176,22 @@ public class BinaryIndividual {
         float xUpper = testFunction.getXUpperBound();
         
         for (int vars = 0; vars < getNumVars(); vars++) {
-            float real = 0.0f;
+            long binary = 0;
             for (int i = 0; i < getGenesPerVar(); i++) {
-                real += chromosome.get(vars).get(i) ? (float) Math.pow(2, i) : 0;
+                binary += chromosome.get(vars).get(i) ? Math.pow(2, i) : 0;
             }
             
-            res.add(vars, real / 
+            if (IS_GRAY) {
+                binary = (binary >> 1) ^ binary;
+            }
+            
+            res.add(vars, (float) binary / 
                     (float) Math.pow(2, chromosome.get(vars).size()) * 
                     (xUpper - xLower) + xLower
             );
         }
         
         return res;
-    }
-    
-    /**
-     * Returns the chromosome representation of this individual's
-     * chromosome, a list of booleans.
-     * 
-     * @return the chromosome representation
-     */
-    private ArrayList<ArrayList<Boolean>> realToChromo() {
-        
-        ArrayList<ArrayList<Boolean>> chromo = new ArrayList<>();
-        float xLower = testFunction.getXLowerBound();
-        float xUpper = testFunction.getXUpperBound();
-        
-        for (int vars = 0; vars < getNumVars(); vars++) {
-            chromo.add(vars, new ArrayList<>());
-            float rep = (realValues.get(vars) - xLower) / (xUpper - xLower) * 
-                    (float) Math.pow(2, getGenesPerVar());
-
-            for (int i = getGenesPerVar() - 1; i >= 0; i--) {
-                if ((rep - (float) Math.pow(2, i)) >= 0)
-                {
-                    chromo.get(vars).add(Boolean.TRUE);
-                    rep -= (float) Math.pow(2, i);
-                }
-                else {
-                    chromo.get(vars).add(Boolean.FALSE);
-                }
-            }
-        }
-        
-        return chromo;
     }
     
     
