@@ -15,10 +15,6 @@ import java.util.stream.Collectors;
  * @author Brett Crawford <brett.crawford@temple.edu>
  */
 public class BinaryIndividual {
-    
-    
-    private static final Random RAND = SGAVariationAnalysis.RAND;
-    private static final boolean IS_GRAY = SGAVariationAnalysis.IS_GRAY;
 
     
 /*============================== Member Variables ============================*/
@@ -62,6 +58,16 @@ public class BinaryIndividual {
      */
     private final GATestFunction testFunction;
     
+    /**
+     * A flag for indicating the use of gray code
+     */
+    private final boolean isGray;
+    
+    /**
+     * The Random object to use for prn generation
+     */
+    private final Random rand;
+    
  
 /*================================ Constructors ==============================*/
 
@@ -70,8 +76,11 @@ public class BinaryIndividual {
      * randomly generates a chromosome.
      * 
      * @param testFunction the test function 
+     * @param rand the pseudo-random number generator
+     * @param isGray a flag for gray code representation
      */
-    public BinaryIndividual(GATestFunction testFunction) {
+    public BinaryIndividual(GATestFunction testFunction, Random rand,
+            boolean isGray) {
         
         int num = testFunction.getNumVars();
         int len = testFunction.getGenesPerVar();
@@ -84,21 +93,24 @@ public class BinaryIndividual {
           
         }
         this.testFunction = testFunction;
+        this.rand = rand;
+        this.isGray = isGray;
         generateRandomChromosome();
         updateValues();
         relFitness = 0;
     }
     
     /**
-     * Creates an individual with the given chromosome.
+     * Creates an individual with the given chromosome. The individual's 
+     * other properties are initialized using the parent values.
      * 
      * @param chromosome the chromosome
-     * @param testFunction the test function
+     * @param parent the parent individual to inherit properties from
      */
     public BinaryIndividual(ArrayList<Boolean> chromosome,
-            GATestFunction testFunction) {
-        int num = testFunction.getNumVars();
-        int len = testFunction.getGenesPerVar();
+            BinaryIndividual parent) {
+        int num = parent.getTestFunction().getNumVars();
+        int len = parent.getTestFunction().getGenesPerVar();
         this.chromosome = new ArrayList<>();
         for (int vars = 0; vars < num; vars++) {
             this.chromosome.add(vars, new ArrayList<>());
@@ -108,7 +120,9 @@ public class BinaryIndividual {
                         Boolean.TRUE : Boolean.FALSE);
             }
         }
-        this.testFunction = testFunction;
+        this.testFunction = parent.getTestFunction();
+        this.rand = parent.getRand();
+        this.isGray = parent.isGray();
         updateValues();
         relFitness = 0;
     }
@@ -132,6 +146,8 @@ public class BinaryIndividual {
             }
         }
         this.testFunction = toCopy.getTestFunction();
+        this.rand = toCopy.getRand();
+        this.isGray = toCopy.isGray();
         updateValues();
         relFitness = 0;
     }
@@ -147,7 +163,7 @@ public class BinaryIndividual {
         
         for (ArrayList<Boolean> var : chromosome) {
             for (int i = 0; i < getGenesPerVar(); i++) {
-                var.set(i, RAND.nextBoolean());
+                var.set(i, rand.nextBoolean());
             }
         }
     }
@@ -181,7 +197,7 @@ public class BinaryIndividual {
                 binary += chromosome.get(vars).get(i) ? Math.pow(2, i) : 0;
             }
             
-            if (IS_GRAY) {
+            if (isGray) {
                 binary = (binary >> 1) ^ binary;
             }
             
@@ -313,6 +329,20 @@ public class BinaryIndividual {
      */
     public GATestFunction getTestFunction() {
         return testFunction;
+    }
+
+    /**
+     * @return the isGray
+     */
+    public boolean isGray() {
+        return isGray;
+    }
+
+    /**
+     * @return the rand
+     */
+    public Random getRand() {
+        return rand;
     }
     
     @Override

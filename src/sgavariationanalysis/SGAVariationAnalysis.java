@@ -24,7 +24,7 @@ public class SGAVariationAnalysis {
 
     public static void main(String[] args) {
         
-        GATestFunction fitFunc = new Function3();
+        GATestFunction testFunc = new Function3();
         BinaryPopulation pop;
         BinaryIndividual worstInd = null;
         BinaryIndividual bestInd = null;
@@ -33,7 +33,7 @@ public class SGAVariationAnalysis {
         
         for (int trial = 0; trial < NUM_TRIALS; trial++) {
          
-            pop = new BinaryPopulation(fitFunc);
+            pop = new BinaryPopulation(testFunc, RAND, IS_GRAY);
             worstInd = pop.getPopulation().get(0);
             bestInd = pop.getPopulation().get(0);
 
@@ -41,7 +41,7 @@ public class SGAVariationAnalysis {
 
                 for (BinaryIndividual bi : pop.getPopulation()) {
                     
-                    if (fitFunc.isMaxProblem()) {
+                    if (testFunc.isMaxProblem()) {
                         if (bi.getObjValue() > bestInd.getObjValue()) {
                             bestInd = bi;
                         }
@@ -68,7 +68,7 @@ public class SGAVariationAnalysis {
         
         meanObj = totalObj / (NUM_TRIALS * MAX_GEN * POP_SIZE);
         
-        System.out.println("Optimal Solution: " + fitFunc.getOptimalSolution());
+        System.out.println("Optimal Solution: " + testFunc.getOptimalSolution());
         
         System.out.println("\nBest Individual:\n" + bestInd);
         
@@ -76,8 +76,8 @@ public class SGAVariationAnalysis {
         
         System.out.println("\nMean Individual:\n" + 
                 "  Objective Value: " + meanObj);
-        if (!fitFunc.isMaxProblem()) {
-            System.out.println("  Fitness transferral: " + (fitFunc.getFitnessTransferral(meanObj)));
+        if (!testFunc.isMaxProblem()) {
+            System.out.println("  Fitness transferral: " + (testFunc.getFitnessTransferral(meanObj)));
         }
         
     }

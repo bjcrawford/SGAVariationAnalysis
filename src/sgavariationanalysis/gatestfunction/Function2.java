@@ -66,7 +66,7 @@ public class Function2 implements GATestFunction {
      */
     @Override
     public int getGenesPerVar() {
-        return 20;
+        return 14;
     }
 
     /**

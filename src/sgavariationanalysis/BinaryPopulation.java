@@ -21,6 +21,7 @@ public class BinaryPopulation {
     
 /*============================== Member Variables ============================*/
 
+    
     /* The population of individuals */
     private final ArrayList<BinaryIndividual> population;
     
@@ -34,15 +35,18 @@ public class BinaryPopulation {
      * Creates a population using the parameters specified in the given
      * fitness function.
      * 
-     * @param fitnessFunction the fitness function to use
+     * @param testFunction the fitness function to use
+     * @param rand the pseudo-random number generator
+     * @param isGray a flag for gray code representation
      */
-    public BinaryPopulation(GATestFunction fitnessFunction) {
+    public BinaryPopulation(GATestFunction testFunction, Random rand,
+            boolean isGray) {
         
         population = new ArrayList<>();
         matingPool = new ArrayList<>();
         
         for (int i = 0; i < SGAVariationAnalysis.POP_SIZE; i++) {
-            population.add(i, new BinaryIndividual(fitnessFunction));
+            population.add(i, new BinaryIndividual(testFunction, rand, isGray));
         }
         
         for (int i = 0; i < SGAVariationAnalysis.POP_SIZE; i++) {

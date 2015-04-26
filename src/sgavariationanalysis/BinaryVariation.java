@@ -116,10 +116,8 @@ public class BinaryVariation {
             }
         }
         
-        res.add(0, new BinaryIndividual(chromoChildA, 
-                parentA.getTestFunction()));
-        res.add(1, new BinaryIndividual(chromoChildB, 
-                parentB.getTestFunction()));
+        res.add(0, new BinaryIndividual(chromoChildA, parentA));
+        res.add(1, new BinaryIndividual(chromoChildB, parentB));
         
         return res;
     }
@@ -192,10 +190,8 @@ public class BinaryVariation {
                 }
         }
         
-        res.add(0, new BinaryIndividual(chromoChildA, 
-                parentA.getTestFunction()));
-        res.add(1, new BinaryIndividual(chromoChildB, 
-                parentB.getTestFunction()));
+        res.add(0, new BinaryIndividual(chromoChildA, parentA));
+        res.add(1, new BinaryIndividual(chromoChildB, parentB));
         
         return res;
     }
@@ -241,10 +237,8 @@ public class BinaryVariation {
             }
         }
         
-        res.add(0, new BinaryIndividual(chromoChildA, 
-                parentA.getTestFunction()));
-        res.add(1, new BinaryIndividual(chromoChildB, 
-                parentB.getTestFunction()));
+        res.add(0, new BinaryIndividual(chromoChildA, parentA));
+        res.add(1, new BinaryIndividual(chromoChildB, parentB));
         
         return res;
     }
@@ -275,10 +269,8 @@ public class BinaryVariation {
             }
         }
         
-        res.add(0, new BinaryIndividual(chromoChildA, 
-                parentA.getTestFunction()));
-        res.add(1, new BinaryIndividual(chromoChildB, 
-                parentB.getTestFunction()));
+        res.add(0, new BinaryIndividual(chromoChildA, parentA));
+        res.add(1, new BinaryIndividual(chromoChildB, parentB));
         
         return res;
         
@@ -352,10 +344,8 @@ public class BinaryVariation {
             }
         }
         
-        res.add(0, new BinaryIndividual(chromoChildA, 
-                parentA.getTestFunction()));
-        res.add(1, new BinaryIndividual(chromoChildB, 
-                parentB.getTestFunction()));
+        res.add(0, new BinaryIndividual(chromoChildA, parentA));
+        res.add(1, new BinaryIndividual(chromoChildB, parentB));
         
         return res;
         
@@ -401,10 +391,8 @@ public class BinaryVariation {
             }
         }
         
-        res.add(0, new BinaryIndividual(chromoChildA, 
-                parentA.getTestFunction()));
-        res.add(1, new BinaryIndividual(chromoChildB, 
-                parentB.getTestFunction()));
+        res.add(0, new BinaryIndividual(chromoChildA, parentA));
+        res.add(1, new BinaryIndividual(chromoChildB, parentB));
         
         return res;
         

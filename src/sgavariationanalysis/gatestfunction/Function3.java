@@ -21,6 +21,22 @@ import sgavariationanalysis.BinaryIndividual;
  */
 public class Function3 implements GATestFunction {
 
+    /*
+       ==================================
+       | Length of gene | Maximum error |
+       ==================================
+       |  6             |  0.78125000   |
+       |  8             |  0.19531250   |
+       |  10            |  0.04882812   |
+       |  12            |  0.01220703   |
+       |  14            |  0.00305176   |
+       |  16            |  0.00076293   |
+       |  18            |  0.00019074   |
+       |  20            |  0.00004768   |
+       ==================================
+                for -20 < x < 30
+    */
+    
     /**
      * Returns true if the function is a maximum problem, and false if 
      * the function is a minimum problem.
@@ -49,7 +65,7 @@ public class Function3 implements GATestFunction {
      */
     @Override
     public int getGenesPerVar() {
-        return 20;
+        return 16;
     }
 
     /**
