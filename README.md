@@ -5,8 +5,26 @@ This program was created as a part of an independent research course on
 Evolutionary Computation taken in the spring of 2015. The inspiration for this 
 program is from the text "Introduction to Evolutionary Algorithms" by Xinjie Yu.
 
-The implementation and parameters of the genetic algorithms used are as follows.
+The implementation and parameters of the genetic algorithms used are as follows:
 
+Upon initialization, a population of 20 individuals is uniformly generated 
+across the search space described by the test function. The GA has a limit of 
+20 generations. With each generation, a mating pool is populated using a 
+roulette wheel selection. This method uses the relative fitness values to 
+determine the size of each individual's "slice" of the roulette wheel. 
+Selection is done with replacement, meaning an individual can be selected 
+from the population into the mating pool multiple times. 
+
+Once the mating pool has been populated, the reproduce method mates adjacent 
+individuals within the mating pool list (i.e., 0 and 1, 2 and 3, etc…). After 
+performing the crossover operation, each child individual undergoes the 
+mutation operation. The probability for crossover has been set at 0.8 and 
+the probability of mutation, at the gene level for the binary representations 
+and at the variable level for the continuous representations, has been set at 
+0.01. Each run (i.e., a test using a particular representation, test function, 
+and variation method), consists of 100 independent trials. For each run the 
+best and worst individuals are recorded as well as the mean objective values 
+produced.
 
 This simple genetic algorithm is used to attempt to find a solution to the 
 following optimization problems:
