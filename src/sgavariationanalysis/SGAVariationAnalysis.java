@@ -23,7 +23,7 @@ public class SGAVariationAnalysis {
     public static final int MAX_GEN = 20;
     public static final float CROSSOVER_PROB = 0.8f;
     public static final float MUTATION_PROB = 0.01f;
-    public static final int NUM_TRIALS = 30;
+    public static final int NUM_TRIALS = 100;
     public static final Random RAND = new Random(System.currentTimeMillis());
     public static final boolean IS_GRAY = false;
 
@@ -200,6 +200,7 @@ public class SGAVariationAnalysis {
         System.out.println("2. Local Arithmetic Crossover");
         System.out.println("3. Linear Crossover");
         System.out.println("4. Heuristic Crossover");
+        System.out.println("5. Blend Crossover");
         System.out.print("\nPlease choose a crossover method: ");
         
         return s.nextInt();

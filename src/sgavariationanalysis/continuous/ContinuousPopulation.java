@@ -149,6 +149,10 @@ public class ContinuousPopulation {
                     children = ContinuousVariation
                             .heuristicCrossover(parentA, parentB);
                     break;
+                case ContinuousVariation.BC:
+                    children = ContinuousVariation
+                            .blendCrossover(parentA, parentB);
+                    break;
                 default:
                     System.out.println("ContinuousPopulation: Invalid id. "
                             + "Using WAC.");

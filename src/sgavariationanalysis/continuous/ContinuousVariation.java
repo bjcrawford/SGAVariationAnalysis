@@ -37,6 +37,9 @@ public class ContinuousVariation {
     /* An id for use with the heuristic crossover */
     public static final int HC = 4;
     
+    /* An id for use with the blend crossover */
+    public static final int BC = 5;
+    
     
 /*============================= Crossover Methods ============================*/
 
@@ -224,6 +227,85 @@ public class ContinuousVariation {
                     childB = new ContinuousIndividual(chromoChildB, parentB);
                 } 
             } while (!childB.isInBounds());
+        }
+        
+        res.add(0, childA);
+        res.add(1, childB);
+        
+        return res;
+    }
+    
+    /**
+     * Returns a list containing the two children generated from the given
+     * parents using a blend crossover method.
+     * 
+     * @param parentA the first parent
+     * @param parentB the second parent
+     * @return a list containing two children
+     */
+    public static ArrayList<ContinuousIndividual> blendCrossover(
+            ContinuousIndividual parentA,
+            ContinuousIndividual parentB) {
+        
+        ArrayList<ContinuousIndividual> res = new ArrayList<>(2);
+        ContinuousIndividual childA = new ContinuousIndividual(parentA);
+        ContinuousIndividual childB = new ContinuousIndividual(parentB);
+        
+        if (RAND.nextFloat() < CROSSOVER_PROB) {
+            
+            ArrayList<Float> chromoChildA = parentA.getChromosome();
+            ArrayList<Float> chromoChildB = parentB.getChromosome();
+            
+            float a = 0.50f;
+            
+            for (int i = 0; i < chromoChildA.size(); i++) {
+
+                if (chromoChildA.get(i) > chromoChildB.get(i)) {
+                    ArrayList<Float> chromoTemp = chromoChildA;
+                    chromoChildA = chromoChildB;
+                    chromoChildB = chromoTemp;
+                }
+
+                float x1 = chromoChildA.get(i);
+                float x2 = chromoChildB.get(i);
+                float l = x1 - a * (x2 - x1);
+                float u = x2 + a * (x2 - x1);
+                float y;
+
+                do {
+                    y = RAND.nextFloat() * (u - l) + l;
+                } while (y <= parentA.getTestFunction().getXLowerBound() ||
+                        y >= parentA.getTestFunction().getXUpperBound());
+
+                chromoChildA.set(i, y);
+            } 
+
+            childA = new ContinuousIndividual(chromoChildA, parentA);
+            
+            for (int i = 0; i < chromoChildB.size(); i++) {
+
+                if (chromoChildB.get(i) > chromoChildA.get(i)) {
+                    ArrayList<Float> chromoTemp = chromoChildB;
+                    chromoChildB = chromoChildA;
+                    chromoChildA = chromoTemp;
+                }
+
+                float x1 = chromoChildB.get(i);
+                float x2 = chromoChildA.get(i);
+                float l = x1 - a * (x2 - x1);
+                float u = x2 + a * (x2 - x1);
+                float y;
+
+                do {
+                    y = RAND.nextFloat() * (u - l) + l;
+                } while (y <= parentB.getTestFunction().getXLowerBound() ||
+                        y >= parentB.getTestFunction().getXUpperBound());
+
+
+                chromoChildB.set(i, y);
+            } 
+            
+            childB = new ContinuousIndividual(chromoChildB, parentB);
         }
         
         res.add(0, childA);
