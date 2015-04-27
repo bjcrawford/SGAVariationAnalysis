@@ -5,7 +5,6 @@
 package sgavariationanalysis.gatestfunction;
 
 import java.util.ArrayList;
-import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * An interface for defining a testing function for a GA.

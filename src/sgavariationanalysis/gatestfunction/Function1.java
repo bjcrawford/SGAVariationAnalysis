@@ -5,7 +5,6 @@
 package sgavariationanalysis.gatestfunction;
 
 import java.util.ArrayList;
-import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * A simple sinusoidal function with many local minima and maxima. This is

@@ -90,7 +90,7 @@ public class ContinuousPopulation {
     /**
      * Uses roulette wheel selection to populate the mating pool. This method
      * uses the relative fitness values to determine the size of each
-     * individual's "slice" of the roulette wheel. Selection is done with
+     * individual's "slice" of the roulette wheel. Selection is done
      * with replacement, meaning an individual can be selected from the 
      * population into the mating pool multiple times.
      */
@@ -116,7 +116,7 @@ public class ContinuousPopulation {
     /**
      * Mates the individuals in the mating pool to create a new population
      * generation. This method mates adjacent individuals within the mating
-     * pool list (i.e., 0 and 1, 2 and 3, etc..). After performing the 
+     * pool list (i.e., 0 and 1, 2 and 3, etc...). After performing the 
      * crossover operation, each child individual undergoes the mutation 
      * operation.
      */

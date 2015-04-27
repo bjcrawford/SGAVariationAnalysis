@@ -5,7 +5,6 @@
 package sgavariationanalysis.gatestfunction;
 
 import java.util.ArrayList;
-import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * The Ackley function offers many local minima on the outer edges

@@ -4,11 +4,10 @@
  */
 package sgavariationanalysis;
 
-import sgavariationanalysis.binary.BinaryVariation;
-import sgavariationanalysis.binary.BinaryPopulation;
-import sgavariationanalysis.binary.BinaryIndividual;
 import java.util.Random;
 import java.util.Scanner;
+import sgavariationanalysis.binary.BinaryPopulation;
+import sgavariationanalysis.binary.BinaryIndividual;
 import sgavariationanalysis.continuous.ContinuousIndividual;
 import sgavariationanalysis.continuous.ContinuousPopulation;
 import sgavariationanalysis.gatestfunction.GATestFunction;

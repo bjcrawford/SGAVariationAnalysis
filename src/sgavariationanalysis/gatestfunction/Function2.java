@@ -5,7 +5,6 @@
 package sgavariationanalysis.gatestfunction;
 
 import java.util.ArrayList;
-import sgavariationanalysis.binary.BinaryIndividual;
 
 /**
  * The sphere model function (De Jong's Function 1) is convex, continuous,
