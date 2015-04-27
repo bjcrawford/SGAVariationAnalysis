@@ -1,6 +1,6 @@
 /*
  *  Author: Brett Crawford <brett.crawford@temple.edu>
- *  File:   Individual.java
+ *  File:   BinaryIndividual.java
  */
 package sgavariationanalysis.binary;
 

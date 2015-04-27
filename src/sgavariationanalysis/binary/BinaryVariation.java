@@ -1,6 +1,6 @@
 /*
  *  Author: Brett Crawford <brett.crawford@temple.edu>
- *  File:   VariationMethods.java
+ *  File:   BinaryVariation.java
  */
 package sgavariationanalysis.binary;
 

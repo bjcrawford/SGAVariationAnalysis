@@ -10,7 +10,7 @@ import sgavariationanalysis.SGAVariationAnalysis;
 import sgavariationanalysis.gatestfunction.GATestFunction;
 
 /**
- * A class representing an population in a GA.
+ * A class representing a binary population in a GA.
  * 
  * @author Brett Crawford <brett.crawford@temple.edu>
  */
@@ -132,8 +132,6 @@ public class BinaryPopulation {
      * pool list (i.e., 0 and 1, 2 and 3, etc..). After performing the 
      * crossover operation, each child individual undergoes the mutation 
      * operation.
-     * 
-     * @param crossoverMethodId the id of the crossover method to use
      */
     public void reproduce() {
         
