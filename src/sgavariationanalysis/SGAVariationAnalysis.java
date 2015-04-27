@@ -9,6 +9,8 @@ import sgavariationanalysis.binary.BinaryPopulation;
 import sgavariationanalysis.binary.BinaryIndividual;
 import java.util.Random;
 import java.util.Scanner;
+import sgavariationanalysis.continuous.ContinuousIndividual;
+import sgavariationanalysis.continuous.ContinuousPopulation;
 import sgavariationanalysis.gatestfunction.GATestFunction;
 import sgavariationanalysis.gatestfunction.Function1;
 import sgavariationanalysis.gatestfunction.Function2;
@@ -105,6 +107,59 @@ public class SGAVariationAnalysis {
     
     public static void runContinuousTrial(GATestFunction testFunc) {
         
+        ContinuousPopulation pop;
+        ContinuousIndividual worstInd = null;
+        ContinuousIndividual bestInd = null;
+        float totalObj = 0.0f;
+        float meanObj;
+        int crossoverId = continuousCrossoverSelection();
+        
+        for (int trial = 0; trial < NUM_TRIALS; trial++) {
+         
+            pop = new ContinuousPopulation(testFunc, RAND, crossoverId);
+            worstInd = pop.getPopulation().get(0);
+            bestInd = pop.getPopulation().get(0);
+
+            for (int gen = 0; gen < MAX_GEN; gen++) {
+
+                for (ContinuousIndividual ci : pop.getPopulation()) {
+                    
+                    if (testFunc.isMaxProblem()) {
+                        if (ci.getObjValue() > bestInd.getObjValue()) {
+                            bestInd = ci;
+                        }
+                        else if (ci.getObjValue() < worstInd.getObjValue()) {
+                            worstInd = ci;
+                        }
+                    }
+                    else {
+                        if (ci.getObjValue() < bestInd.getObjValue()) {
+                            bestInd = ci;
+                        }
+                        else if (ci.getObjValue() > worstInd.getObjValue()) {
+                            worstInd = ci;
+                        }
+                    }
+                    totalObj += ci.getObjValue();
+                }
+
+                pop.rwSelect();
+                pop.reproduce();
+            }
+            
+        }
+        
+        meanObj = totalObj / (NUM_TRIALS * MAX_GEN * POP_SIZE);
+        
+        System.out.println("\nTest Function:\n" + testFunc);
+        System.out.println("\nBest Individual:\n" + bestInd);
+        System.out.println("\nWorst Individual:\n" + worstInd);
+        System.out.println("\nMean Individual:\n" + 
+                "  Objective Value: " + meanObj);
+        if (!testFunc.isMaxProblem()) {
+            System.out.println("  Fitness transferral: " + 
+                    (testFunc.getFitnessTransferral(meanObj)));
+        }
     }
     
     public static int welcomeSelection() {
@@ -114,7 +169,7 @@ public class SGAVariationAnalysis {
         System.out.println("\n1. Binary");
         System.out.println("2. Gray");
         System.out.println("3. Continuous");
-        System.out.print("\nPlease choose a representation: ");
+        System.out.print("\nPlease choose a chromosome representation: ");
         
         return s.nextInt();
     }
@@ -132,7 +187,18 @@ public class SGAVariationAnalysis {
         System.out.println("7. Shuffle Crossover");
         System.out.println("8. Shuffle Crossover with Reduced Surrogate");
         System.out.println("9. Three Parent Crossover");
-        System.out.print("\nPlease choose a function: ");
+        System.out.print("\nPlease choose a crossover method: ");
+        
+        return s.nextInt();
+    }
+    
+    public static int continuousCrossoverSelection() {
+        
+        Scanner s = new Scanner(System.in);
+        
+        System.out.println("\n1. Whole Arithmetic Crossover");
+        System.out.println("2. Local Arithmetic Crossover");
+        System.out.print("\nPlease choose a crossover method: ");
         
         return s.nextInt();
     }
@@ -145,7 +211,7 @@ public class SGAVariationAnalysis {
         System.out.println("\n1. Function1");
         System.out.println("2. Function2");
         System.out.println("3. Function3");
-        System.out.print("\nPlease choose a crossover: ");
+        System.out.print("\nPlease choose a test function: ");
         
         switch(s.nextInt()) {
             case 1:
