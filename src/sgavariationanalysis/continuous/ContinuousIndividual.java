@@ -118,8 +118,26 @@ public class ContinuousIndividual {
     }
     
     
+/*=============================== Public Methods =============================*/
+  
+    
+    public boolean isInBounds() {
+        boolean res = true;
+        for (float real : chromosome) {
+            if (real <= testFunction.getXLowerBound() ||
+                    real >= testFunction.getXUpperBound()) {
+                res = false;
+                break;
+            }
+        }
+        
+        return res;
+    }
+    
+    
 /*============================== Private Methods =============================*/
   
+    
     /**
      * Populates the chromosome of this individual with random values.
      */

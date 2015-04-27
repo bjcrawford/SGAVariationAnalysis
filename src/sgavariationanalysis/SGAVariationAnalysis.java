@@ -198,6 +198,8 @@ public class SGAVariationAnalysis {
         
         System.out.println("\n1. Whole Arithmetic Crossover");
         System.out.println("2. Local Arithmetic Crossover");
+        System.out.println("3. Linear Crossover");
+        System.out.println("4. Heuristic Crossover");
         System.out.print("\nPlease choose a crossover method: ");
         
         return s.nextInt();

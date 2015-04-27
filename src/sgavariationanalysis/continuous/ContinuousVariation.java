@@ -31,6 +31,12 @@ public class ContinuousVariation {
     /* An id for use with the local arithmetic crossover */
     public static final int LAC = 2;
     
+    /* An id for use with the linear crossover */
+    public static final int LC = 3;
+    
+    /* An id for use with the heuristic crossover */
+    public static final int HC = 4;
+    
     
 /*============================= Crossover Methods ============================*/
 
@@ -61,7 +67,7 @@ public class ContinuousVariation {
             for (int i = 0; i < chromoChildA.size(); i++) {
                 
                 float x1 = chromoChildA.get(i);
-                float x2 = chromoChildA.get(i);
+                float x2 = chromoChildB.get(i);
                 
                 if (isLocal) {
                     a = RAND.nextFloat();
@@ -78,6 +84,150 @@ public class ContinuousVariation {
         
         res.add(0, new ContinuousIndividual(chromoChildA, parentA));
         res.add(1, new ContinuousIndividual(chromoChildB, parentB));
+        
+        return res;
+    }
+    
+    /**
+     * Returns a list containing the two children generated from the given
+     * parents using a linear crossover method.
+     * 
+     * @param parentA the first parent
+     * @param parentB the second parent
+     * @return a list containing two children
+     */
+    public static ArrayList<ContinuousIndividual> linearCrossover(
+            ContinuousIndividual parentA,
+            ContinuousIndividual parentB) {
+        
+        ArrayList<ContinuousIndividual> res = new ArrayList<>(2);
+        ContinuousIndividual childA = new ContinuousIndividual(parentA);
+        ContinuousIndividual childB = new ContinuousIndividual(parentB);
+        ContinuousIndividual childC;
+        
+        if (RAND.nextFloat() < CROSSOVER_PROB) {
+            
+            ArrayList<Float> chromoChildA = parentA.getChromosome();
+            ArrayList<Float> chromoChildB = parentB.getChromosome();
+            ArrayList<Float> chromoChildC = new ArrayList<>();
+            
+            float a = RAND.nextFloat();
+            float b = 1.0f - a;
+            
+            for (int i = 0; i < chromoChildA.size(); i++) {
+                
+                int l = parentA.getTestFunction().getXLowerBound();
+                int u = parentA.getTestFunction().getXLowerBound();
+                
+                float x1 = chromoChildA.get(i);
+                float x2 = chromoChildB.get(i);
+                
+                float y1 = 0.5f * x1 + 0.5f * x2;
+                float y2 = 1.5f * x1 - 0.5f * x2;
+                float y3 = - 0.5f * x1 + 1.5f * x2;
+                
+                if (y2 <= l || y2 >= u) {
+                    y2 = y1;
+                }
+                if (y3 <= l || y3 >= u) {
+                    y3 = y1;
+                }
+                
+                chromoChildA.set(i, y1);
+                chromoChildB.set(i, y2);
+                chromoChildC.add(i, y3);
+            }
+            
+            
+            childA = new ContinuousIndividual(chromoChildA, parentA);
+            childB = new ContinuousIndividual(chromoChildB, parentA);
+            childC = new ContinuousIndividual(chromoChildC, parentA);
+            
+            float totalFitness = childA.getFitTransValue() +
+                    childB.getFitTransValue() + childC.getFitTransValue();
+            
+            float relFitA = childA.getFitTransValue() / totalFitness;
+            float relFitB = childB.getFitTransValue() / totalFitness;
+            float relFitC = childC.getFitTransValue() / totalFitness;
+            
+            if (relFitA <= relFitB && relFitA <= relFitC) {
+                childA = childB;
+                childB = childC;
+            }
+            else if (relFitB <= relFitA && relFitB <= relFitC) {
+                childB = childC;
+            }
+            
+        }
+        
+        res.add(0, childA);
+        res.add(1, childB);
+        
+        return res;
+    }
+    
+    /**
+     * Returns a list containing the two children generated from the given
+     * parents using a heuristic crossover method.
+     * 
+     * @param parentA the first parent
+     * @param parentB the second parent
+     * @return a list containing two children
+     */
+    public static ArrayList<ContinuousIndividual> heuristicCrossover(
+            ContinuousIndividual parentA,
+            ContinuousIndividual parentB) {
+        
+        ArrayList<ContinuousIndividual> res = new ArrayList<>(2);
+        ContinuousIndividual childA = new ContinuousIndividual(parentA);
+        ContinuousIndividual childB = new ContinuousIndividual(parentB);
+        
+        if (RAND.nextFloat() < CROSSOVER_PROB) {
+            
+            ArrayList<Float> chromoChildA = parentA.getChromosome();
+            ArrayList<Float> chromoChildB = parentB.getChromosome();
+            
+            do {
+                
+                float b1 = RAND.nextFloat() * 0.4f + 0.8f;
+                for (int i = 0; i < chromoChildA.size(); i++) {
+                    float x1 = chromoChildA.get(i);
+                    float x2 = chromoChildB.get(i);
+                    float y;
+                    
+                    if (parentA.getFitTransValue() > parentB.getFitTransValue()) {
+                        y = x2 + b1 * (x1 - x2);
+                    }
+                    else {
+                        y = x1 + b1 * (x2 - x1);
+                    }
+                    chromoChildA.set(i, y);
+                    childA = new ContinuousIndividual(chromoChildA, parentA);
+                } 
+            } while (!childA.isInBounds());
+            
+            do {
+                
+                float b2 = RAND.nextFloat() * 0.4f + 0.8f;
+                for (int i = 0; i < chromoChildA.size(); i++) {
+                    float x1 = chromoChildA.get(i);
+                    float x2 = chromoChildB.get(i);
+                    float y;
+                    
+                    if (parentA.getFitTransValue() > parentB.getFitTransValue()) {
+                        y = x2 + b2 * (x1 - x2);
+                    }
+                    else {
+                        y = x1 + b2 * (x2 - x1);
+                    }
+                    chromoChildB.set(i, y);
+                    childB = new ContinuousIndividual(chromoChildB, parentB);
+                } 
+            } while (!childB.isInBounds());
+        }
+        
+        res.add(0, childA);
+        res.add(1, childB);
         
         return res;
     }

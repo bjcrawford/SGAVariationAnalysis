@@ -77,23 +77,11 @@ public class BinaryPopulation {
         float totalFitness = 0;
         
         for (BinaryIndividual bi : population) {
-            
-            if (bi.getTestFunction().isMaxProblem()) {
-                totalFitness += bi.getObjValue();
-            }
-            else {
-                totalFitness += bi.getFitTransValue();
-            }
+            totalFitness += bi.getFitTransValue();
         }
         
         for (BinaryIndividual bi : population) {
-            
-            if (bi.getTestFunction().isMaxProblem()) {
-                bi.setRelFitness(bi.getObjValue() / totalFitness);
-            }
-            else {
-                bi.setRelFitness(bi.getFitTransValue() / totalFitness);
-            }
+            bi.setRelFitness(bi.getFitTransValue() / totalFitness);
         }
     }
            

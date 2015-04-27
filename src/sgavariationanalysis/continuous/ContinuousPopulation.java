@@ -76,23 +76,11 @@ public class ContinuousPopulation {
         float totalFitness = 0;
         
         for (ContinuousIndividual ci : population) {
-            
-            if (ci.getTestFunction().isMaxProblem()) {
-                totalFitness += ci.getObjValue();
-            }
-            else {
-                totalFitness += ci.getFitTransValue();
-            }
+            totalFitness += ci.getFitTransValue();
         }
         
         for (ContinuousIndividual ci : population) {
-            
-            if (ci.getTestFunction().isMaxProblem()) {
-                ci.setRelFitness(ci.getObjValue() / totalFitness);
-            }
-            else {
-                ci.setRelFitness(ci.getFitTransValue() / totalFitness);
-            }
+            ci.setRelFitness(ci.getFitTransValue() / totalFitness);
         }
     }
            
@@ -152,6 +140,14 @@ public class ContinuousPopulation {
                 case ContinuousVariation.LAC:
                     children = ContinuousVariation
                             .arithmeticCrossover(parentA, parentB, true);
+                    break;
+                case ContinuousVariation.LC:
+                    children = ContinuousVariation
+                            .linearCrossover(parentA, parentB);
+                    break;
+                case ContinuousVariation.HC:
+                    children = ContinuousVariation
+                            .heuristicCrossover(parentA, parentB);
                     break;
                 default:
                     System.out.println("ContinuousPopulation: Invalid id. "
